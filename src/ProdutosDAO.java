@@ -21,7 +21,7 @@ public class ProdutosDAO {
     PreparedStatement prep;
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
-
+    
     public boolean cadastrarProduto(ProdutosDTO produto) {
         String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
 
@@ -30,8 +30,9 @@ public class ProdutosDAO {
             stmt.setString(1, produto.getNome());
             stmt.setInt(2, produto.getValor());
             stmt.setString(3, produto.getStatus());
-
+            
             int rowsInserted = stmt.executeUpdate();
+            System.out.println("Produto Cadastrado! ");
             return rowsInserted > 0;
 
         } catch (SQLException e) {
@@ -42,7 +43,7 @@ public class ProdutosDAO {
 
     public List<ProdutosDTO> listarProdutos() {
         List<ProdutosDTO> listaProdutos = new ArrayList<>();
-        String sql = "SELECT * FROM produtos"; // Busca todos os produtos
+        String sql = "SELECT * FROM produtos";
 
         try (Connection conn = new conectaDAO().connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
@@ -53,7 +54,7 @@ public class ProdutosDAO {
                 produto.setValor(rs.getInt("valor"));
                 produto.setStatus(rs.getString("status"));
 
-                listaProdutos.add(produto); // Adiciona cada produto à lista
+                listaProdutos.add(produto);
             }
         } catch (Exception e) {
             System.out.println("Erro ao listar produtos: " + e.getMessage());
